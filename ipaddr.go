@@ -15,17 +15,17 @@ var ipinfoUrl = "https://ipinfo.io"
 var Token string
 
 type IPInfo struct {
-	IP       string
-	City     string
-	Region   string
-	Country  string
-	Location string
-	Org      string
-	Timezone string
+	IP       string `json:"ip"`
+	City     string `json:"city"`
+	Region   string `json:"region"`
+	Country  string `json:"country"`
+	Location string `json:"loc"`
+	Org      string `json:"org"`
+	Timezone string `json:"timezone"`
 }
 
 func GetIPInfo() (IPInfo, error) {
-	var resp getIPInfoResponse
+	var resp IPInfo
 
 	err := requests.
 		URL(ipinfoUrl).
@@ -41,29 +41,11 @@ func GetIPInfo() (IPInfo, error) {
 		return IPInfo{}, err
 	}
 
-	return resp.toIPInfo(), nil
+	resp.Country = fmtCountry(resp.Country)
+	return resp, nil
 }
 
-type getIPInfoResponse struct {
-	IP       string `json:"ip"`
-	City     string `json:"city"`
-	Region   string `json:"region"`
-	Country  string `json:"country"`
-	Location string `json:"loc"`
-	Org      string `json:"org"`
-	Timezone string `json:"timezone"`
-}
-
-func (r getIPInfoResponse) toIPInfo() IPInfo {
-	myCountry := countries.ByName(r.Country)
-
-	return IPInfo{
-		IP:       r.IP,
-		City:     r.City,
-		Region:   r.Region,
-		Country:  fmt.Sprintf("%s (%s)", myCountry, myCountry.Alpha2()),
-		Location: r.Location,
-		Org:      r.Org,
-		Timezone: r.Timezone,
-	}
+// Format country display text
+func fmtCountry(isoCode string) string {
+	return fmt.Sprintf("%s (%s)", countries.ByName(isoCode), isoCode)
 }
