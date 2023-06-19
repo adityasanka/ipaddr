@@ -21,7 +21,7 @@ run: build
 .PHONY: build
 ## build: build the cli tool
 build: clean install
-	go build -ldflags="-X 'github.com/adityasanka/ipaddr.Token=${TOKEN}'" -o ${APP} ./cmd
+	go build -ldflags="-s -w -X 'github.com/adityasanka/ipaddr.Token=${TOKEN}'" -o ${APP} ./cmd
 
 .PHONY: clean
 ## clean: remove binaries
