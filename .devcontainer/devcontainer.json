@@ -42,6 +42,7 @@
 				]
 			},
 			"extensions": [
+				"vscode-icons-team.vscode-icons",
 				"streetsidesoftware.code-spell-checker",
 				"yzhang.markdown-all-in-one",
 				"golang.Go"
